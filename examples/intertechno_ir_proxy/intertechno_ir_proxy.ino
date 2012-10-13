@@ -130,11 +130,11 @@ void ir_decode()
             break;
 */
         case 28: // ch+
-            prefix; = ( family << 4 ) + device;
+            prefix = ( family << 4 ) + device;
             rf_tx_cmd(pin_rf, prefix, INTERTECHNO_CMD_ON);
             break;
         case 29: // ch-
-            prefix; = ( family << 4 ) + device;
+            prefix = ( family << 4 ) + device;
             rf_tx_cmd(pin_rf, prefix, INTERTECHNO_CMD_OFF);
             break;
 /*
