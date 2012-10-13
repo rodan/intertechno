@@ -1,0 +1,16 @@
+
+  Intertechno library for the Arduino.
+
+  This library implements the following features:
+
+   - generate command sequences that once sent to an OOK rf stage are able 
+   to control intertechno radio switches.
+   - ability to use an RFM22 transceiver (not implemented yet)
+
+  Author:          Petre Rodan <petre.rodan@simplex.ro>
+  Available from:  https://github.com/rodan/intertechno
+  License:         GNU GPLv3
+
+  Intertechno is a manufacturer of radio controlled relays and circuits
+  that allow house automation projects.
+
