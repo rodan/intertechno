@@ -15,14 +15,8 @@
 // you can even use the remote control that came with the switch (Vsigmin 3.3V)
 #define pin_rf 8
 
-//the entire 128bit sequence (including the sync) takes 54.6ms 
-//on a factory remote control
-// in this example the uC is watching for interrupts, 
-// so a smaller period for pulses is needed
-#define INTERTECHNO_SINGLE_T 316
-#define INTERTECHNO_TRIPLE_T 948
-
 // controlled device
+struct it its;
 uint8_t family = 0xb;       // this translates as family 'L' on the rotary switch
 uint8_t device = 0x6;       // device number 7 on remotes that have devices numbered 1 to 16, 
     // or group 2 device 3 on remotes that have a 4 position 
@@ -131,11 +125,11 @@ void ir_decode()
 */
         case 28: // ch+
             prefix = ( family << 4 ) + device;
-            rf_tx_cmd(pin_rf, prefix, INTERTECHNO_CMD_ON);
+            rf_tx_cmd(its, prefix, INTERTECHNO_CMD_ON);
             break;
         case 29: // ch-
             prefix = ( family << 4 ) + device;
-            rf_tx_cmd(pin_rf, prefix, INTERTECHNO_CMD_OFF);
+            rf_tx_cmd(its, prefix, INTERTECHNO_CMD_OFF);
             break;
 /*
         case 36: // record
@@ -166,8 +160,14 @@ void ir_decode()
 void setup()
 {
     delay(200);
-    pinMode(pin_rf, OUTPUT);
-    digitalWrite(pin_rf, LOW);
+
+    // populate the structure
+    its.pin = pin_rf;
+    its.rf_cal_on = -104;  // -104 due to interrupt routines in the IRremote library
+    its.rf_cal_off = -104;
+
+    pinMode(its.pin, OUTPUT);
+    digitalWrite(its.pin, LOW);
     irrecv.enableIRIn();
 }
 

@@ -32,37 +32,37 @@
 #include "intertechno.h"
 
 // a HI LO sequence 
-static void rf_ook_pulse(uint8_t pin, int on, int off)
+void rf_ook_pulse(struct it its, uint16_t on, uint16_t off)
 {
-    digitalWrite(pin, HIGH);
+    digitalWrite(its.pin, HIGH);
     delayMicroseconds(on);
-    digitalWrite(pin, LOW);
+    digitalWrite(its.pin, LOW);
     delayMicroseconds(off);
 }
 
 // 0 is 10001000
-void rf_tx_0(uint8_t pin)
+void rf_tx_0(struct it its)
 {
     // each ook_pulse sends 4 bits
-    rf_ook_pulse(pin, INTERTECHNO_SINGLE_T, INTERTECHNO_TRIPLE_T);
-    rf_ook_pulse(pin, INTERTECHNO_SINGLE_T, INTERTECHNO_TRIPLE_T);
+    rf_ook_pulse(its, BITD + its.rf_cal_on, 3 * (BITD + its.rf_cal_off));
+    rf_ook_pulse(its, BITD + its.rf_cal_on, 3 * (BITD + its.rf_cal_off));
 }
 
 // 1 is 10001110
-void rf_tx_1(uint8_t pin)
+void rf_tx_1(struct it its)
 {
     // each ook_pulse sends 4 bits
-    rf_ook_pulse(pin, INTERTECHNO_SINGLE_T, INTERTECHNO_TRIPLE_T);
-    rf_ook_pulse(pin, INTERTECHNO_TRIPLE_T, INTERTECHNO_SINGLE_T);
+    rf_ook_pulse(its, BITD + its.rf_cal_on, 3 * (BITD + its.rf_cal_off));
+    rf_ook_pulse(its, 3 * (BITD + its.rf_cal_on), BITD + its.rf_cal_off);
 }
 
 // sync sequence is 1000000000000000000000000000000
-void rf_tx_sync(uint8_t pin)
+void rf_tx_sync(struct it its)
 {
-    rf_ook_pulse(pin, INTERTECHNO_SINGLE_T, INTERTECHNO_SINGLE_T * 31);
+    rf_ook_pulse(its, BITD + its.rf_cal_on, 31 * (BITD + its.rf_cal_off));
 }
 
-uint8_t rf_tx_cmd(uint8_t pin, uint8_t prefix, uint8_t cmd)
+uint8_t rf_tx_cmd(struct it its, uint8_t prefix, uint8_t cmd)
 {
     int8_t i, j;
     uint8_t rprefix;
@@ -73,24 +73,24 @@ uint8_t rf_tx_cmd(uint8_t pin, uint8_t prefix, uint8_t cmd)
         for (i = 7; i >= 0; i--) {
             switch (rprefix & (1 << i)) {
             case 0:
-                rf_tx_0(pin);
+                rf_tx_0(its);
                 break;
             default:
-                rf_tx_1(pin);
+                rf_tx_1(its);
                 break;
             }
         }
         for (i = 3; i >= 0; i--) {
             switch (cmd & (1 << i)) {
             case 0:
-                rf_tx_0(pin);
+                rf_tx_0(its);
                 break;
             default:
-                rf_tx_1(pin);
+                rf_tx_1(its);
                 break;
             }
         }
-        rf_tx_sync(pin);
+        rf_tx_sync(its);
     }
     return 0;
 }
@@ -108,5 +108,3 @@ uint8_t rotate_byte(uint8_t in)
     rv += (in & 0x8) >> 3;
     return rv;
 }
-
-

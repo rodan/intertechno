@@ -11,17 +11,18 @@
 #define INTERTECHNO_CMD_ON  0x07
 #define INTERTECHNO_CMD_OFF 0x06
 
-//the entire 128bit sequence (including the sync) takes 54.6ms 
-//on a factory remote control
-// the value for 'single' ca be between 300 and 400 depending
-// on the uC usage.
-// it should be 316 if IRremote has been compiled in
-// and 420 otherwise
-#ifndef INTERTECHNO_SINGLE_T
-#define INTERTECHNO_SINGLE_T 420
-#endif
+// the entire 128bit sequence (including the sync) must be 54.6ms long
+// the bit duration is defined by BITD and it gets calibrated via it.rf_cal*
+#define BITD 420
 
-#define INTERTECHNO_TRIPLE_T 3*INTERTECHNO_SINGLE_T
+// it.pin is the uC pin used for sending the command squence to the OOK rf link
+// it.rf_cal_{on,off} are calibration coefficients that tweak the bit length
+// should be 0 if the uC has no external interrupt routines and -104 otherwise
+struct it {
+    uint8_t pin;
+    int16_t rf_cal_on;
+    int16_t rf_cal_off;
+};
 
 // the intertechno protocol needs all 4bit chunks of data in LSB notation
 // this function will take an 8bit value and rotate bits
@@ -29,13 +30,13 @@
 uint8_t rotate_byte(uint8_t in);
 
 // a HI LO sequence with HI taking 'on' us and LO 'off' us
-void rf_ook_pulse(uint16_t on,uint16_t off);
+void rf_ook_pulse(struct it, uint16_t on, uint16_t off);
 
 // 0 is translated as 10001000
 // 1 is translated as 10001110
-void rf_tx_0(uint8_t pin);
-void rf_tx_1(uint8_t pin);
-void rf_tx_sync(uint8_t pin);
+void rf_tx_0(struct it);
+void rf_tx_1(struct it);
+void rf_tx_sync(struct it);
 
 // transmit a command sequence. each sequence is defined as 
 // prefix (8bit)  cmd (4bit)  sync (32bit)
@@ -49,6 +50,6 @@ void rf_tx_sync(uint8_t pin);
 //      OFF 0110
 //   sync
 //      1000000000000000000000000000000
-uint8_t rf_tx_cmd(uint8_t pin, uint8_t prefix, uint8_t cmd);
+uint8_t rf_tx_cmd(struct it, uint8_t prefix, uint8_t cmd);
 
 #endif

@@ -6,16 +6,19 @@
 // you can even use the remote control that came with the switch (Vsigmin 3.3V)
 #define pin_rf 8
 
-// in this example the uC is not watching for interrupts, 
-// so a larger period for pulses is needed
-//#define INTERTECHNO_SINGLE_T 420
-//#define INTERTECHNO_TRIPLE_T 1260
+struct it its;
 
 void setup()
 {
     delay(200);
-    pinMode(pin_rf, OUTPUT);
-    digitalWrite(pin_rf, LOW);
+
+    // populate the structure
+    its.pin = pin_rf;
+    its.rf_cal_on = 0;  // this sample code needs no adjustments
+    its.rf_cal_off = 0;
+
+    pinMode(its.pin, OUTPUT);
+    digitalWrite(its.pin, LOW);
 }
 
 // family_code   (4bit)  [ 0x0 - 0xF ] defined as [ A - P ] by Intertechno
@@ -34,9 +37,9 @@ void loop()
     uint8_t prefix = ( family << 4 ) + device;
 
     // blinky!
-    rf_tx_cmd(pin_rf, prefix, INTERTECHNO_CMD_ON);
+    rf_tx_cmd(its, prefix, INTERTECHNO_CMD_ON);
     delay(5000);
-    rf_tx_cmd(pin_rf, prefix, INTERTECHNO_CMD_OFF);
+    rf_tx_cmd(its, prefix, INTERTECHNO_CMD_OFF);
     delay(5000);
 }
 
