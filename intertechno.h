@@ -16,7 +16,7 @@
 #define BITD 420
 
 // it.pin is the uC pin used for sending the command squence to the OOK rf link
-// it.rf_cal_{on,off} are calibration coefficients that tweak the bit length
+// it.rf_cal_{on,off} are calibration coefficients that tweak the bit duration
 // should be 0 if the uC has no external interrupt routines and -104 otherwise
 struct it {
     uint8_t pin;

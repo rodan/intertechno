@@ -1,7 +1,7 @@
 
 # Board settings.
 #BOARD = atmega328
-BOARD = pro5v328
+#BOARD = pro5v328
 
 # Where to find header files and libraries.
 #INC_DIRS = ./inc

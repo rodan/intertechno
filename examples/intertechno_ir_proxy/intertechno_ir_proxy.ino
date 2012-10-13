@@ -13,7 +13,7 @@
 
 // use this pin to send the command sequence to a 433.92 MHz OOK stage
 // you can even use the remote control that came with the switch (Vsigmin 3.3V)
-#define pin_rf 8
+#define pin_rf 5
 
 // controlled device
 struct it its;
@@ -144,7 +144,7 @@ void ir_decode()
             break;
             */
         default:
-            //Serial.println(results.value,HEX);
+            Serial.println(results.value,HEX);
             break;
         }                       // case
 
@@ -163,9 +163,24 @@ void setup()
 
     // populate the structure
     its.pin = pin_rf;
-    its.rf_cal_on = -104;  // -104 due to interrupt routines in the IRremote library
-    its.rf_cal_off = -104;
 
+    // select calibration based on uC clock
+    // due to different durations of interrupt routines
+#if defined(F_CPU) && F_CPU == 8000000
+    its.rf_cal_on = -216;
+    its.rf_cal_off = -214;
+#elif defined(F_CPU) && F_CPU == 16000000
+    its.rf_cal_on = -104;
+    its.rf_cal_off = -104;
+#else 
+    // you're on your own. 
+    // just make sure one full sequence takes 54.6ms, 
+    // and the sequence without the trailing 31 LO signals 41.6ms
+    its.rf_cal_on = -104;
+    its.rf_cal_off = -104;
+#endif
+
+    Serial.begin(9600);
     pinMode(its.pin, OUTPUT);
     digitalWrite(its.pin, LOW);
     irrecv.enableIRIn();
