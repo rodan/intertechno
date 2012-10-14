@@ -7,6 +7,7 @@
 
 #include <intertechno.h>
 #include <IRremote.h>
+#include <IRremoteInt.h>
 
 // TSOP 36-38kHz IR filter signal
 #define pin_ir 3
@@ -125,11 +126,18 @@ void ir_decode()
 */
         case 28: // ch+
             prefix = ( family << 4 ) + device;
+            // zero out the Timer Interrupt Mask Register TIMSK IRremote is using
+            // this will enable much more precise transmission
+            TIMER_DISABLE_INTR;
             rf_tx_cmd(its, prefix, INTERTECHNO_CMD_ON);
+            // re-enable the timer interrupt so we keep getting IR signals
+            TIMER_ENABLE_INTR;
             break;
         case 29: // ch-
             prefix = ( family << 4 ) + device;
+            TIMER_DISABLE_INTR;
             rf_tx_cmd(its, prefix, INTERTECHNO_CMD_OFF);
+            TIMER_ENABLE_INTR;
             break;
 /*
         case 36: // record
@@ -165,19 +173,18 @@ void setup()
     its.pin = pin_rf;
 
     // select calibration based on uC clock
-    // due to different durations of interrupt routines
 #if defined(F_CPU) && F_CPU == 8000000
-    its.rf_cal_on = -216;
-    its.rf_cal_off = -214;
+    its.rf_cal_on = -7;
+    its.rf_cal_off = -7;
 #elif defined(F_CPU) && F_CPU == 16000000
-    its.rf_cal_on = -104;
-    its.rf_cal_off = -104;
+    its.rf_cal_on = -1;
+    its.rf_cal_off = -1;
 #else 
     // you're on your own. 
     // just make sure one full sequence takes 54.6ms, 
-    // and the sequence without the trailing 31 LO signals 41.6ms
-    its.rf_cal_on = -104;
-    its.rf_cal_off = -104;
+    // and the same sequence without the trailing 31 LO signals 41.6ms
+    its.rf_cal_on = -1;
+    its.rf_cal_off = -1;
 #endif
 
     Serial.begin(9600);

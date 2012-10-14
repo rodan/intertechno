@@ -4,7 +4,7 @@
 
 // use this pin to send the command sequence to a 433.92 MHz OOK stage
 // you can even use the remote control that came with the switch (Vsigmin 3.3V)
-#define pin_rf 8
+#define pin_rf 5
 
 struct it its;
 
@@ -14,8 +14,21 @@ void setup()
 
     // populate the structure
     its.pin = pin_rf;
-    its.rf_cal_on = 0;  // this sample code needs no adjustments
-    its.rf_cal_off = 0;
+
+#if defined(F_CPU) && F_CPU == 8000000
+    its.rf_cal_on = -7;
+    its.rf_cal_off = -7;
+#elif defined(F_CPU) && F_CPU == 16000000
+    its.rf_cal_on = -1;
+    its.rf_cal_off = -1;
+#else 
+    // you're on your own. 
+    // just make sure one full sequence takes 54.6ms, 
+    // and the same sequence without the trailing 31 LO signals 41.6ms
+    its.rf_cal_on = -1;
+    its.rf_cal_off = -1;
+#endif
+
 
     pinMode(its.pin, OUTPUT);
     digitalWrite(its.pin, LOW);
