@@ -5,7 +5,11 @@
 
    - generate command sequences that once sent to an OOK rf stage are able 
    to control intertechno radio switches.
-   - ability to use an RFM22 transceiver (not implemented yet)
+
+  you can get such a stage either by hacking an Intertechno remote control [1]
+  or buy purchasing someting like 'Grove - 433MHz Simple RF link kit' [2]
+  from Seeedstudio and using the TX module. that module has been tested and
+  found to work well even at low (3.3v) Vcc levels.
 
   Author:          Petre Rodan <petre.rodan@simplex.ro>
   Available from:  https://github.com/rodan/intertechno
@@ -14,3 +18,5 @@
   Intertechno is a manufacturer of radio controlled relays and circuits
   that allow house automation projects.
 
+  [1] https://picasaweb.google.com/petre.rodan/IntertechnoHack
+  [2] http://www.seeedstudio.com/depot/grove-433mhz-simple-rf-link-kit-p-1062.html?cPath=139_140
