@@ -8,8 +8,9 @@
 #endif
 
 // the ON and OFF commands, LSB first notation
-#define INTERTECHNO_CMD_ON  0x07
-#define INTERTECHNO_CMD_OFF 0x06
+#define INTERTECHNO_CMD_ON  0x07 // command for turning switches on
+#define INTERTECHNO_CMD_OFF 0x06 // command for turning switches off
+#define INTERTECHNO_CMD_SP  0x0f // special devices like doorbells, PIR detectors use this cmd
 
 // the entire 128bit sequence (including the sync) must be 54.6ms long
 // the bit duration is defined by BITD and it gets calibrated via it.rf_cal*
