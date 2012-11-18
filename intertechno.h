@@ -14,7 +14,7 @@
 
 // the entire 128bit sequence (including the sync) must be 54.6ms long
 // the bit duration is defined by BITD and it gets calibrated via it.rf_cal*
-#define BITD 420
+#define BITD 420  // time in us for one bit
 
 // it.pin is the uC pin used for sending the command squence to the OOK rf link
 // it.rf_cal_{on,off} are calibration coefficients that tweak the bit duration

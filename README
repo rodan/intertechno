@@ -4,12 +4,12 @@
   This library implements the following features:
 
    - generate command sequences that once sent to an OOK rf stage are able 
-   to control intertechno radio switches.
+   to control intertechno radio switches and doorbells.
 
-  you can get such a stage either by hacking an Intertechno remote control [1]
-  or buy purchasing someting like 'Grove - 433MHz Simple RF link kit' [2]
-  from Seeedstudio and using the TX module. that module has been tested and
-  found to work well even at low (3.3v) Vcc levels.
+  you can get such a stage either by hacking a factory remote control [1]
+  or by using something like 'Grove - 433MHz Simple RF link kit' [2] 
+  from Seeedstudio. that TX module has been tested and found to work well 
+  even at low (3.3v) Vcc levels.
 
   Author:          Petre Rodan <petre.rodan@simplex.ro>
   Available from:  https://github.com/rodan/intertechno
