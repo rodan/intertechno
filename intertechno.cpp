@@ -9,7 +9,7 @@
    to control intertechno radio switches.
    - ability to use an RFM22 transceiver (not implemented yet)
 
-  Author:          Petre Rodan <petre.rodan@simplex.ro>
+  Author:          Petre Rodan <2b4eda@subdimension.ro>
   Available from:  https://github.com/rodan/intertechno
  
   GNU GPLv3 license:

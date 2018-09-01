@@ -11,7 +11,7 @@
   from Seeedstudio. that TX module has been tested and found to work well 
   even at low (3.3v) Vcc levels.
 
-  Author:          Petre Rodan <petre.rodan@simplex.ro>
+  Author:          Petre Rodan <2b4eda@subdimension.ro>
   Available from:  https://github.com/rodan/intertechno
   License:         GNU GPLv3
 
