@@ -20,8 +20,9 @@
 
 # 2024 update
 
-  there are [two](https://github.com/rodan/voidvent/tree/master/doc/sig) intertechno protocols in the wild now and the arduino lib only implements one of them. see my msp430 [implementation](https://github.com/rodan/voidvent/blob/master/firmware/base_station/intertechno.c) that can interface with both.
-
+  there are two [3] intertechno protocols in the wild now and the arduino lib only implements one of them. see my msp430 [4] that can interface with both.
 
   [1] https://picasaweb.google.com/petre.rodan/IntertechnoHack
   [2] http://www.seeedstudio.com/depot/grove-433mhz-simple-rf-link-kit-p-1062.html?cPath=139_140
+  [3] https://github.com/rodan/voidvent/tree/master/doc/sig
+  [4] https://github.com/rodan/voidvent/blob/master/firmware/base_station/intertechno.c
